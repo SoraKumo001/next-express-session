@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "dev": "next dev"
+  },
+  "devDependencies": {
+    "@types/express-session": "^1.15.16",
+    "@types/node": "^13.7.4",
+    "@types/react": "^16.9.22",
+    "express-session": "^1.17.0",
+    "next": "^9.2.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "typescript": "^3.8.2"
+  }
+}
