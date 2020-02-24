@@ -11,7 +11,7 @@ const Page: NextSessionPage<Props> = ({session:{ value2 }}) => {
       <Link href="/">
         <a>トップページへ</a>
       </Link>
-      <div>Page2のページリロード回数:{value2}</div>
+      <div>Page2のページリロード回数:{value2||0}</div>
     </>
   );
 };
@@ -25,5 +25,6 @@ Page.getInitialProps = async ({ session }) => {
     //セッションデータの保存
     session.value2 = value2;
   }
+
 };
 export default Page;

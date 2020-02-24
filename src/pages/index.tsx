@@ -11,7 +11,7 @@ const Page: NextSessionPage<SessionProps> = ({session:{ value }}) => {
       <Link href="page2">
         <a>Page2へ</a>
       </Link>
-      <div>Indexのページリロード回数:{value}</div>
+      <div>Indexのページリロード回数:{value||0}</div>
     </>
   );
 };
