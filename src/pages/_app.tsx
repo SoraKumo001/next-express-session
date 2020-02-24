@@ -1,4 +1,9 @@
-import { initialSession, initProps } from "../libs/next-express-session";
+import {
+  initialSession,
+  initProps,
+  Session,
+  createSessionProps
+} from "../libs/next-express-session";
 import App, { AppContext, createUrl } from "next/app";
 import session from "express-session";
 import redis from "redis";
@@ -10,6 +15,7 @@ const ExpressSessionOption = {
     ? undefined
     : new (redisStore(session))({ client: redis.createClient() })
 };
+const SessionNameFilter:string[] = [];
 
 /**
  * Next.js Custom Sesson APP
@@ -18,22 +24,24 @@ const ExpressSessionOption = {
  * @class SessionApp
  * @extends {App}
  */
-export default class SessionApp extends App {
+export default class SessionApp extends App<{ session: Session }> {
   static async getInitialProps({
     ctx,
     Component: { getInitialProps }
   }: AppContext) {
+    const session = await initialSession(ctx, ExpressSessionOption);
     const context = {
       ...ctx,
-      session: await initialSession(ctx, ExpressSessionOption)
+      session
     };
     return {
-      pageProps: getInitialProps && (await getInitialProps(context))
+      pageProps: getInitialProps && (await getInitialProps(context)),
+      session: createSessionProps(session,SessionNameFilter)
     };
   }
   render() {
+    initProps(this);
     const { router, Component, pageProps } = this.props;
-    initProps(Component, pageProps);
     return <Component {...pageProps} url={createUrl(router)} />;
   }
 }

@@ -1,29 +1,29 @@
 import Link from "next/link";
-import {
-  NextSessionPage,
-  createSessionProps
-} from "../libs/next-express-session";
+import { NextSessionPage } from "../libs/next-express-session";
 
-interface Props {
-  value?: number;
+interface SessionProps {
+  value: number;
 }
 
-const Page: NextSessionPage<Props> = ({ value }) => {
+const Page: NextSessionPage<SessionProps> = ({session:{ value }}) => {
   return (
     <>
       <Link href="page2">
         <a>Page2へ</a>
       </Link>
-      <div>ページリロード回数:{value}</div>
+      <div>Indexのページリロード回数:{value}</div>
     </>
   );
 };
 
 Page.getInitialProps = async ({ session }) => {
   if (session) {
-    const { value } = session;
-    session.value = typeof value === "number" ? value + 1 : 1;
+    //セッションデータの読み出し
+    let { value } = session as { value?: number };
+    //データをインクリメント
+    value = typeof value === "number" ? value + 1 : 1;
+    //セッションデータの保存
+    session.value = value;
   }
-  return createSessionProps(session);
 };
 export default Page;

@@ -1,6 +1,7 @@
 import expressSession from "express-session";
 import { NextPageContext, NextComponentType, NextPage } from "next";
 import Express from "express";
+import App from "next/app";
 
 const defaultOptions = {
   secret: "secret",
@@ -25,26 +26,35 @@ export const initialSession = (
 export interface NextSessionPageContext extends NextPageContext {
   session: { [key: string]: unknown };
 }
-interface Session {
+export interface Session {
   [key: string]: unknown;
 }
-export type NextSessionPage<IP = {}, P = {}> = NextComponentType<
+export type NextSessionPage<SP = {}, IP = {}, P = {}> = NextComponentType<
   NextSessionPageContext,
-  IP,
-  P & IP & { session: Session }
+  IP | void,
+  P & IP & { session: SP }
 >;
-
-export const createSessionProps = (session?: Session) => {
-  if (!session) return {};
+export const createSessionProps = (session?: Session, filters?: string[]) => {
+  if (!session) return undefined;
   const result: Session = {};
   for (const [key, value] of Object.entries(session))
-    key !== "cookie" && (result[key] = value);
-  return { ...result, session: result };
+    key !== "cookie" &&
+      (!filters || filters.indexOf(key) === -1) &&
+      (result[key] = value);
+  return result;
 };
-export const initProps = (
-  page: NextPage,
-  pageProps?: { session?: Session }
-) => {
-  if (pageProps && pageProps.session)
-    page.defaultProps = { ...page.defaultProps, ...pageProps.session };
+
+let sessionProps:Session;
+export const initProps = (app: App) => {
+  const { Component, pageProps, session } = app.props as App["props"] & {
+    session?: Session;
+  };
+  if(session)
+      sessionProps = session;
+
+    Component.defaultProps = {
+      ...Component.defaultProps,
+      ...pageProps,
+      session:sessionProps
+    };
 };
