@@ -1,5 +1,5 @@
 import expressSession from "express-session";
-import { NextPageContext, NextComponentType } from "next";
+import { NextPageContext, NextComponentType, NextPage } from "next";
 import Express from "express";
 
 const defaultOptions = {
@@ -41,6 +41,10 @@ export const createSessionProps = (session?: Session) => {
     key !== "cookie" && (result[key] = value);
   return { ...result, session: result };
 };
-export const initProps = (page: NextSessionPage, session: Session) => {
-  if (session) page.defaultProps = session;
+export const initProps = (
+  page: NextPage,
+  pageProps?: { session?: Session }
+) => {
+  if (pageProps && pageProps.session)
+    page.defaultProps = { ...page.defaultProps, ...pageProps.session };
 };

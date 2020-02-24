@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "next dev"
+    "dev": "next dev",
+    "start": "next start",
+    "build": "next build"
   },
   "devDependencies": {
     "@types/express-session": "^1.15.16",

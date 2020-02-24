@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { NextSessionPage, createSessionProps, initProps } from "../libs/next-session";
+import {
+  NextSessionPage,
+  createSessionProps
+} from "../libs/next-express-session";
 
 interface Props {
   value?: number;
 }
 
-const Page: NextSessionPage<Props> = ({ session, value }) => {
-  initProps(Page,session)
+const Page: NextSessionPage<Props> = ({ value }) => {
   return (
     <>
       <Link href="page2">
@@ -19,8 +21,8 @@ const Page: NextSessionPage<Props> = ({ session, value }) => {
 
 Page.getInitialProps = async ({ session }) => {
   if (session) {
-    const value = typeof session.value === "number" ? session.value + 1 : 1;
-    session.value = value;
+    const { value } = session;
+    session.value = typeof value === "number" ? value + 1 : 1;
   }
   return createSessionProps(session);
 };
