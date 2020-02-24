@@ -2,7 +2,7 @@ import Link from "next/link";
 import { NextSessionPage } from "../libs/next-express-session";
 
 interface Props {
-  value2: number;
+  value2?: number;
 }
 
 const Page: NextSessionPage<Props> = ({session:{ value2 }}) => {
@@ -22,7 +22,7 @@ Page.getInitialProps = async ({ session }) => {
     let { value2 } = session as { value2?: number };
     //データをインクリメント
     value2 = typeof value2 === "number" ? value2 + 1 : 1;
-    //セッションデータの保存
+    //セッションデータの保存(ここで設定したデータはdefaultPropsに保存される)
     session.value2 = value2;
   }
 

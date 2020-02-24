@@ -5,3 +5,5 @@ reg.json
 *.log
 out
 __reg__
+sessions
+.vscode
