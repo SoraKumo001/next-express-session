@@ -4,10 +4,10 @@
 
 Nest.jsでexpress-sessionを使うだけのサンプルです  
 
-ローカルで実験可能なように、sessionのstoreにはsession-file-storeを使用しています  
+- ローカルで実験可能なように、sessionのstoreにはsession-file-storeを使用しています  
 そのためsession情報は./sessionディレクトリに作成されます  
 
-store関連のコンポーネントはnodeのランタイムを使用するので、Web向けビルドを行うときにWebpackでエラーを起こします  
+- store関連のコンポーネントはnodeのランタイムを使用するので、Web向けビルドを行うときにWebpackでエラーを起こします  
 以下のように、エラーが出たパッケージを取り除くようにしてください
 
 **next.config.js**
