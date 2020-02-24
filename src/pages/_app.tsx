@@ -1,8 +1,14 @@
 import { initialSession, initProps } from "../libs/next-express-session";
 import App, { AppContext, createUrl } from "next/app";
+import session from "express-session";
+import redis from "redis";
+import redisStore from "connect-redis";
 
 const ExpressSessionOption = {
-  secret: "secret"
+  secret: "secret",
+  store: process.browser
+    ? undefined
+    : new (redisStore(session))({ client: redis.createClient() })
 };
 
 /**
